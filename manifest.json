@@ -1,0 +1,9 @@
+{
+    "manifest_version": 3,
+    "version": "0.1",
+    "name": "Gotta Go Fast",
+    "action": {
+        "default_popup": "index.html",
+        "default_icon": "stopwatch.png"
+    }
+}
