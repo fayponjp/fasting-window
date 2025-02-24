@@ -66,7 +66,7 @@ a {
     color: inherit;
     background-color: #f8f8ff;
 
-    transition: transform 0.4s;
+    transition: transform 0.2s, background-color 0.4s;
 }
 
 .button:hover {
