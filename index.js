@@ -1,8 +1,13 @@
-// functions - initially for fasting, but potential update for multiple timers
-
-const startButton = document.getElementById("startButton");
 const progressOutlineElement = document.getElementById("progressBorder");
 const timerDisplay = document.getElementById("timerDisplay");
+const finishButton = document.getElementById("finishButton");
+const cancelButton = document.getElementById("cancelButton");
+const activeFastElementsArray = [progressOutlineElement, timerDisplay, finishButton, cancelButton];
+
+const startButton = document.getElementById("startButton");
+const hourOptions = document.querySelector(".hourOptions");
+const inactiveFastElementsArray = [startButton, hourOptions];
+
 const fastHourButtons = document.querySelectorAll(".timeButton");
 
 let fastHours = 16;
@@ -53,12 +58,8 @@ function clickStartHandler() {
     const startDateTime = getDateTime();
     // startDateTime = '2025-2-23 12:50:30';
     localStorage.setItem("startTime", startDateTime);
-
-    progressOutlineElement.classList.remove("hidden");
-    timerDisplay.classList.remove("hidden");
-
+    toggleElementDisplay(inactiveFastElementsArray, activeFastElementsArray);
     getFastEndTime(fastHours, startDateTime);
-
     // updateTimerDisplay();
 }
 
@@ -71,6 +72,17 @@ function selectFastHoursHandler(fastHourElement) {
     }
 }
 
-function showCountdownElements() {
+function toggleElementDisplay(arrayToHide, arrayToDisplay) {
+    console.log(arrayToHide);
+    for (let i = 0; i < arrayToHide.length; i++) {
+        arrayToHide[i].classList.add("hidden");
+    }
+
+    for (let i = 0; i < arrayToDisplay.length; i++) {
+        arrayToDisplay[i].classList.remove("hidden");
+    }
+}
+
+function toggleNoFastElements() {
 
 }
