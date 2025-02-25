@@ -16,26 +16,26 @@
     <title>Gotta Go Fast</title>
 </head>
 <body>
-    <div class="main">
+    <main class="main">
+        <h1><span id="fastTime"></span>-HOUR FAST</h1>
         <div class="hidden" id="progressBorder">
             <div id="progressBar"></div>
         </div>
         <div id="timerDisplay" class="hidden"></div>
-        <button class="button fastButton" id="startButton">BEGIN FAST</button>
+        <button class="button fastButton" id="startButton">BEGIN</button>
+        <button class="button fastButton hidden" id="finishButton">COMPLETE FAST</button>
         <div class="activeFastButtons">
-            <button class="button fastButton hidden" id="finishButton">COMPLETE FAST</button>
-            <button class="button fastButton hidden" id="cancelButton">CANCEL FAST</button>
+            <button class="button activeFastButton hidden" id="updateButton">UPDATE START TIME</button>
+            <button class="button activeFastButton  hidden" id="cancelButton">CANCEL FAST</button>
         </div>
         <div class="hourOptions">
             <button title="16-hour fast" class="button timeButton selected">16</button>
             <button title="18-hour fast" class="button timeButton ">18</button>
             <button title="20-hour fast" class="button timeButton">20</button>
         </div>
-        <footer>
-            <a href="https://www.flaticon.com/free-icons/timer" title="timer icons">Timer icons created by Gregor Cresnar Premium - Flaticon</a>
-        </footer>
-    </div>
-
+    </main>
+    <footer>
+    </footer>
     <script src="index.js" defer></script>
 </body>
 </html>

@@ -17,6 +17,22 @@ a {
     text-decoration: none;
 }
 
+h1 {
+    font-size: 1.5em;
+}
+
+/* make this javascript and execute from current width to current ratio% */
+/* @keyframes grow-from-left {
+    from {
+        opacity: 0;
+        width: 0%;
+    }
+
+    to {
+        opacity: 1;
+    }
+} */
+
 #progressBorder {
     width: 80%;
     height: 40px;
@@ -31,6 +47,7 @@ a {
     border-radius: 8px;
     width: 0%;
     max-width: 100%;
+    /* animation: grow-from-left 4.8s; */
 }
 
 .main {
@@ -48,12 +65,6 @@ a {
     margin-bottom: 10px;
 
     position: relative;
-}
-
-.activeFastButtons {
-    display: flex;
-    justify-content: center;
-    column-gap: 10px;
 }
 
 .button {
@@ -77,8 +88,21 @@ a {
 
 .fastButton {
     font-size: 18px;
-    border-radius: 10px;
+    border-radius: 15px;
     border: 1px solid #667b75;
+}
+
+.activeFastButtons {
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+}
+
+.activeFastButton {
+    font-size: 12px;
+    border-radius: 15px;
+    border: 1px solid #667b75;
+    padding: 10px;
 }
 
 .timeButton {
