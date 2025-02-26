@@ -58,7 +58,7 @@ function updateTimerDisplay(startTime, endTime) {
     loopVariable = setInterval(() => {
         const currentTime = new Date();
         const secondsSinceStart = currentTime.getTime() - startTime.getTime();
-        const differenceInTimeRatio = Math.round((secondsSinceStart / goalSeconds) * 100);
+        const differenceInTimeRatio = (secondsSinceStart / goalSeconds) * 100;
 
         progressBarElement.style.width = `${differenceInTimeRatio}%`;
         progressBarElement.style.transition = 'width 2s';
@@ -74,7 +74,7 @@ function updateTimerDisplay(startTime, endTime) {
 function clickStartHandler() {
     // const startDateTime = getDateTime();
     let startDateTime = new Date();
-    // startDateTime = new Date('February 24, 2025 11:15:00');
+    // startDateTime = new Date('February 26, 2025 07:10:00');
     // localStorage.setItem("startTime", startDateTime);
     toggleElementDisplay(inactiveFastElementsArray, activeFastElementsArray);
     const endDateTime = getFastEndTime(fastHours, startDateTime);
@@ -85,6 +85,10 @@ function clickStartHandler() {
 function cancelFastHandler() {
     clearInterval(loopVariable);
     toggleElementDisplay(activeFastElementsArray, inactiveFastElementsArray);
+}
+
+function updateFastHandler() {
+    clearInterval(loopVariable);
 }
 
 function selectFastHoursHandler(fastHourElement) {
@@ -110,6 +114,7 @@ function toggleElementDisplay(arrayToHide, arrayToDisplay) {
 
 startButton.addEventListener("click", clickStartHandler);
 cancelButton.addEventListener("click", cancelFastHandler);
+updateButton.addEventListener("click", () => null);
 
 for (let i = 0; i < fastHourButtons.length; i++) {
     fastHourButtons[i].addEventListener("click", () => {
