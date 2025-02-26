@@ -21,18 +21,6 @@ h1 {
     font-size: 1.5em;
 }
 
-/* make this javascript and execute from current width to current ratio% */
-/* @keyframes grow-from-left {
-    from {
-        opacity: 0;
-        width: 0%;
-    }
-
-    to {
-        opacity: 1;
-    }
-} */
-
 #progressBorder {
     width: 80%;
     height: 40px;

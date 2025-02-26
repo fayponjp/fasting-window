@@ -26,20 +26,18 @@ function getFastEndTime(selectedFastHours, startTime) {
     return dateTimeValue;
 }
 
-function getDateTime() {
-    const today = new Date();
+function getDateTime(time) {
+    const day = time.getDate();
+    const month = time.getMonth()+1;
+    const year = time.getFullYear();
 
-    const day = today.getDate();
-    const month = today.getMonth()+1;
-    const year = today.getFullYear();
-
-    let hour = today.getHours();
+    let hour = time.getHours();
     if(hour<10)hour = "0"+hour;
 
-    let minute = today.getMinutes();
+    let minute = time.getMinutes();
     if(minute<10)minute = "0"+minute;
 
-    let second = today.getSeconds();
+    let second = time.getSeconds();
     if(second<10)second = "0"+second;
 
     return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
@@ -52,7 +50,10 @@ function updateTimerDisplay(startTime, endTime) {
     const timeDisplayElement = document.getElementById("timerDisplay");
     const progressBarElement = document.getElementById("progressBar");
 
-    // timeDisplayElement.textContent =`Time Started: ${dateTimeValue}`;
+    const formattedStartDisplay = getDateTime(startTime);
+    const formattedEndDisplay = getDateTime(endTime);
+
+    timeDisplayElement.textContent =`Time Started: ${formattedStartDisplay} | Goal Time: ${formattedEndDisplay}`;
 
     loopVariable = setInterval(() => {
         const currentTime = new Date();
@@ -67,14 +68,13 @@ function updateTimerDisplay(startTime, endTime) {
             progressOutlineElement.style.border = '1px solid #8cb369';
         }
 
-        console.log(differenceInTimeRatio);
     }, 1000);
 }
 
 function clickStartHandler() {
     // const startDateTime = getDateTime();
     let startDateTime = new Date();
-    startDateTime = new Date('February 24, 2025 11:15:00');
+    // startDateTime = new Date('February 24, 2025 11:15:00');
     // localStorage.setItem("startTime", startDateTime);
     toggleElementDisplay(inactiveFastElementsArray, activeFastElementsArray);
     const endDateTime = getFastEndTime(fastHours, startDateTime);
@@ -84,6 +84,7 @@ function clickStartHandler() {
 
 function cancelFastHandler() {
     clearInterval(loopVariable);
+    toggleElementDisplay(activeFastElementsArray, inactiveFastElementsArray);
 }
 
 function selectFastHoursHandler(fastHourElement) {
