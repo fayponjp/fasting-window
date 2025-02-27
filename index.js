@@ -45,7 +45,6 @@ function getDateTime(time) {
 
 function updateTimerDisplay(startTime, endTime) {
     const goalSeconds = endTime.getTime() - startTime.getTime();
-    console.log(goalSeconds/1000/3600);
 
     const timeDisplayElement = document.getElementById("timerDisplay");
     const progressBarElement = document.getElementById("progressBar");
@@ -53,15 +52,26 @@ function updateTimerDisplay(startTime, endTime) {
     const formattedStartDisplay = getDateTime(startTime);
     const formattedEndDisplay = getDateTime(endTime);
 
-    timeDisplayElement.textContent =`Time Started: ${formattedStartDisplay} | Goal Time: ${formattedEndDisplay}`;
+    
 
     loopVariable = setInterval(() => {
         const currentTime = new Date();
         const secondsSinceStart = currentTime.getTime() - startTime.getTime();
         const differenceInTimeRatio = (secondsSinceStart / goalSeconds) * 100;
 
+        let totalSeconds = Math.round(secondsSinceStart/1000);
+        let hours = Math.floor(totalSeconds / 3600);
+        if(hours<10)hours = "0"+hours;
+        totalSeconds %= 3600;
+        let minutes = Math.floor(totalSeconds / 60);
+        if(minutes<10)minutes = "0"+minutes;
+        let seconds = totalSeconds % 60;
+        if(seconds<10)seconds = "0"+seconds;
+
+        timeDisplayElement.textContent =`${hours}:${minutes}:${seconds}`;
+
         progressBarElement.style.width = `${differenceInTimeRatio}%`;
-        progressBarElement.style.transition = 'width 2s';
+        progressBarElement.style.transition = 'width 0.4s';
 
         if (differenceInTimeRatio > 100) {
             progressBarElement.style.backgroundColor = '#8cb369';
@@ -75,9 +85,11 @@ function clickStartHandler() {
     // const startDateTime = getDateTime();
     let startDateTime = new Date();
     // startDateTime = new Date('February 26, 2025 07:10:00');
-    // localStorage.setItem("startTime", startDateTime);
+
     toggleElementDisplay(inactiveFastElementsArray, activeFastElementsArray);
     const endDateTime = getFastEndTime(fastHours, startDateTime);
+    localStorage.setItem("startTime", startDateTime);
+    localStorage.setItem("endTime", endDateTime);
 
     updateTimerDisplay(startDateTime, endDateTime);
 }
@@ -111,6 +123,16 @@ function toggleElementDisplay(arrayToHide, arrayToDisplay) {
     }
 }
 
+function startExtension() {
+    const startDateTime = localStorage.getItem("startTime");
+    if (startDateTime) {
+        const endDateTime = localStorage.getItem("endTime");
+        toggleElementDisplay(inactiveFastElementsArray, activeFastElementsArray);
+        console.log(new Date(startDateTime));
+        updateTimerDisplay(new Date(startDateTime), new Date(endDateTime));
+    }
+}
+
 
 startButton.addEventListener("click", clickStartHandler);
 cancelButton.addEventListener("click", cancelFastHandler);
@@ -123,3 +145,4 @@ for (let i = 0; i < fastHourButtons.length; i++) {
 }
 
 updateFastTimeText(fastHours);
+startExtension();

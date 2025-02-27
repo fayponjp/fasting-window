@@ -27,6 +27,7 @@ h1 {
     border: 1px solid #d77166;
     background-color: #fff4f4;
     border-radius: 10px;
+    overflow: hidden;
 }
 
 #progressBar {
@@ -50,7 +51,6 @@ h1 {
     height: 300px;
 
     padding: 25px 10px;
-    margin-bottom: 10px;
 
     position: relative;
 }
