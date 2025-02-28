@@ -82,8 +82,7 @@ function updateTimerDisplay(startTime, endTime) {
 }
 
 function clickStartHandler() {
-    // const startDateTime = getDateTime();
-    let startDateTime = new Date();
+    const startDateTime = new Date();
     // startDateTime = new Date('February 26, 2025 07:10:00');
 
     toggleElementDisplay(inactiveFastElementsArray, activeFastElementsArray);
@@ -133,10 +132,15 @@ function startExtension() {
     }
 }
 
+function modalHandler(callback) {
+    const modalElement = document.querySelector(".modal");
+    modalElement.classList.toggle("modal-shown");
+}
+
 
 startButton.addEventListener("click", clickStartHandler);
-cancelButton.addEventListener("click", cancelFastHandler);
-updateButton.addEventListener("click", () => null);
+cancelButton.addEventListener("click", () => modalHandler(cancelFastHandler));
+updateButton.addEventListener("click", () => modalHandler(updateFastHandler));
 
 for (let i = 0; i < fastHourButtons.length; i++) {
     fastHourButtons[i].addEventListener("click", () => {
