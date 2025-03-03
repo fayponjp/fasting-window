@@ -16,34 +16,32 @@
     <title>Gotta Go Fast</title>
 </head>
 <body>
-    <main class="main">
-        <h1><span id="fastTime"></span>-HOUR FAST</h1>
-        <div id="timerDisplay" class="hidden"></div>
-        <div class="hidden" id="progressBorder">
-            <div id="progressBar"></div>
-        </div>
-        <button class="button fastButton" id="startButton">BEGIN</button>
-        <button class="button fastButton hidden" id="finishButton">COMPLETE FAST</button>
-        <div class="activeFastButtons">
-            <button class="button activeFastButton hidden" id="updateButton">UPDATE START TIME</button>
-            <button class="button activeFastButton  hidden" id="cancelButton">CANCEL FAST</button>
-        </div>
-        <div class="hourOptions">
-            <button title="16-hour fast" class="button timeButton selected">16</button>
-            <button title="18-hour fast" class="button timeButton ">18</button>
-            <button title="20-hour fast" class="button timeButton">20</button>
-        </div>
-        <div class="modal">
-            <h3>Update Timer?</h3>
-            <div class="">
-                <button class="button">Yes</button>
-                <button class="button">No</button>
+    <div class="extension">
+        <main class="main">
+            <h1><span id="fastTime"></span>-HOUR FAST</h1>
+            <div id="timerDisplay" class="hidden"></div>
+            <div class="hidden" id="progressBorder">
+                <div id="progressBar"></div>
             </div>
-        </div>
-    </main>
-    <footer>
-    </footer>
+            <button class="button fastButton" id="startButton">BEGIN</button>
+            <button class="button fastButton hidden" id="finishButton">COMPLETE FAST</button>
+            <div class="activeFastButtons">
+                <button class="button activeFastButton hidden" id="updateButton">UPDATE START TIME</button>
+                <button class="button activeFastButton  hidden" id="cancelButton">CANCEL FAST</button>
+            </div>
+            <div class="hourOptions">
+                <button title="16-hour fast" class="button timeButton selected">16</button>
+                <button title="18-hour fast" class="button timeButton ">18</button>
+                <button title="20-hour fast" class="button timeButton">20</button>
+            </div>
+        </main>
 
+        <div class="modal hidden">
+            <h3 class="modal-container-text"></h3>
+            <button class="button" id="modalConfirm">Yes</button>
+            <button class="button" id="modalCancel">No</button>
+        </div>
+    </div>
     <script src="index.js" defer></script>
 </body>
 </html>

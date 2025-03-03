@@ -39,17 +39,21 @@ h1 {
     /* animation: grow-from-left 4.8s; */
 }
 
+.extension {
+    position: relative;
+    width: 368px;
+    height: 300px;
+}
+
 .main {
-    background-color: #dce1dc;
+    background-color: rgb(220, 225, 220, 1);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     row-gap: 15px;
-
-    width: 368px;
-    height: 300px;
-
+    height: 100%;
+    width: 100%;
     padding: 25px 10px;
 
     position: relative;
@@ -59,6 +63,9 @@ h1 {
     border: none;
     max-width: 40%;
     padding: 14px 20px;
+    border-radius: 6px;
+    border: 1px solid #667b75;
+    border-radius: 15px;
 
     cursor: pointer;
 
@@ -76,8 +83,6 @@ h1 {
 
 .fastButton {
     font-size: 18px;
-    border-radius: 15px;
-    border: 1px solid #667b75;
 }
 
 .activeFastButtons {
@@ -88,8 +93,6 @@ h1 {
 
 .activeFastButton {
     font-size: 12px;
-    border-radius: 15px;
-    border: 1px solid #667b75;
     padding: 10px;
 }
 
@@ -130,18 +133,21 @@ h1 {
 
 .modal {
     text-align: center;
-    position: absolute;
-    background-color: #fbe4c3;
-    height: 80%;
-    width: 70%;
-    padding-top: 15%;
-    left: -500px;
+    background-color: #fcda75;
+    height: 150px;
+    width: 300px;
+    margin: auto;
     box-sizing: border-box;
-    border-radius: 4.6px;
-}
+    /* background-color: rgba(196, 196, 196, 0.5); */
+    z-index: 3;
+    border-radius: 8px;
+    border: 1px solid #162b13;
 
-.modal-shown {
-    left: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
 
 .hidden {

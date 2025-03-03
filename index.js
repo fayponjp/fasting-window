@@ -132,15 +132,19 @@ function startExtension() {
     }
 }
 
-function modalHandler(callback) {
+function modalHandler(callback, confirmationMessage) {
     const modalElement = document.querySelector(".modal");
-    modalElement.classList.toggle("modal-shown");
+    modalElement.classList.remove("hidden");
+    document.querySelector(".modal-container-text").textContent = confirmationMessage;
+
+    localStorage.removeItem("startTime");
+    localStorage.removeItem("endTime");
 }
 
 
 startButton.addEventListener("click", clickStartHandler);
-cancelButton.addEventListener("click", () => modalHandler(cancelFastHandler));
-updateButton.addEventListener("click", () => modalHandler(updateFastHandler));
+cancelButton.addEventListener("click", () => modalHandler(cancelFastHandler, "Cancel fast?"));
+updateButton.addEventListener("click", () => modalHandler(updateFastHandler, "Update start time?"));
 
 for (let i = 0; i < fastHourButtons.length; i++) {
     fastHourButtons[i].addEventListener("click", () => {
