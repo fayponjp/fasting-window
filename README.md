@@ -1,6 +1,7 @@
 A (currently Chrome-only) browser extension to track 16, 18, or 20 hour fasts for [intermittent fasting](https://en.wikipedia.org/wiki/Intermittent_fasting).
 
 Users can select from the three fasting window options 
+
 ![image](https://github.com/user-attachments/assets/9bf284ac-9ca5-44b2-b48a-fd5d79f2f5ef)
 
 ![image](https://github.com/user-attachments/assets/1f0e2484-7460-488e-a8fd-d6ff65a30876)
