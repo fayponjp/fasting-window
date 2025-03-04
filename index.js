@@ -9,6 +9,8 @@ const startButton = document.getElementById("startButton");
 const hourOptions = document.querySelector(".hourOptions");
 const inactiveFastElementsArray = [startButton, hourOptions];
 
+const modalElement = document.querySelector(".modal");
+
 const fastHourButtons = document.querySelectorAll(".timeButton");
 
 let fastHours = 16;
@@ -52,8 +54,6 @@ function updateTimerDisplay(startTime, endTime) {
     const formattedStartDisplay = getDateTime(startTime);
     const formattedEndDisplay = getDateTime(endTime);
 
-    
-
     loopVariable = setInterval(() => {
         const currentTime = new Date();
         const secondsSinceStart = currentTime.getTime() - startTime.getTime();
@@ -76,6 +76,7 @@ function updateTimerDisplay(startTime, endTime) {
         if (differenceInTimeRatio > 100) {
             progressBarElement.style.backgroundColor = '#8cb369';
             progressOutlineElement.style.border = '1px solid #8cb369';
+            finishButton.textContent = 'COMPLETE FAST'
         }
 
     }, 1000);
@@ -83,7 +84,7 @@ function updateTimerDisplay(startTime, endTime) {
 
 function clickStartHandler() {
     const startDateTime = new Date();
-    // startDateTime = new Date('February 26, 2025 07:10:00');
+    // new Date('March 03, 2025 07:10:00');
 
     toggleElementDisplay(inactiveFastElementsArray, activeFastElementsArray);
     const endDateTime = getFastEndTime(fastHours, startDateTime);
@@ -95,11 +96,17 @@ function clickStartHandler() {
 
 function cancelFastHandler() {
     clearInterval(loopVariable);
+
+    localStorage.removeItem("startTime");
+    localStorage.removeItem("endTime");
+
     toggleElementDisplay(activeFastElementsArray, inactiveFastElementsArray);
+    modalElement.classList.add("hidden");
 }
 
 function updateFastHandler() {
     clearInterval(loopVariable);
+    modalElement.classList.add("hidden");
 }
 
 function selectFastHoursHandler(fastHourElement) {
@@ -114,11 +121,11 @@ function selectFastHoursHandler(fastHourElement) {
 
 function toggleElementDisplay(arrayToHide, arrayToDisplay) {
     for (let i = 0; i < arrayToHide.length; i++) {
-        arrayToHide[i].classList.add("hidden");
+        arrayToHide[i].classList.toggle("hidden");
     }
 
     for (let i = 0; i < arrayToDisplay.length; i++) {
-        arrayToDisplay[i].classList.remove("hidden");
+        arrayToDisplay[i].classList.toggle("hidden");
     }
 }
 
@@ -130,17 +137,16 @@ function startExtension() {
         console.log(new Date(startDateTime));
         updateTimerDisplay(new Date(startDateTime), new Date(endDateTime));
     }
+    updateFastTimeText(fastHours);
 }
 
 function modalHandler(callback, confirmationMessage) {
-    const modalElement = document.querySelector(".modal");
     modalElement.classList.remove("hidden");
     document.querySelector(".modal-container-text").textContent = confirmationMessage;
 
-    localStorage.removeItem("startTime");
-    localStorage.removeItem("endTime");
+    document.getElementById("modalConfirm").addEventListener("click", () => callback());
+    document.getElementById("modalCancel").addEventListener("click", () => callback());
 }
-
 
 startButton.addEventListener("click", clickStartHandler);
 cancelButton.addEventListener("click", () => modalHandler(cancelFastHandler, "Cancel fast?"));
@@ -152,5 +158,4 @@ for (let i = 0; i < fastHourButtons.length; i++) {
     });
 }
 
-updateFastTimeText(fastHours);
 startExtension();
