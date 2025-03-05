@@ -16,9 +16,26 @@ const fastHourButtons = document.querySelectorAll(".timeButton");
 let fastHours = 16;
 let loopVariable = "";
 
-function updateFastTimeText(time) {
-    const fastTimeText = document.getElementById("fastTime");
-    fastTimeText.textContent = time;
+startButton.addEventListener("click", startFastTimer);
+cancelButton.addEventListener("click", () => modalHandler(cancelFastHandler, "Cancel fast?"));
+updateButton.addEventListener("click", () => modalHandler(updateFastHandler, "Update start time?"));
+
+for (let i = 0; i < fastHourButtons.length; i++) {
+    fastHourButtons[i].addEventListener("click", () => {
+        selectFastHoursHandler(fastHourButtons[i]);
+    });
+}
+
+function startFastTimer() {
+    const startDateTime = new Date();
+    // new Date('March 03, 2025 07:10:00');
+
+    toggleElementDisplay(inactiveFastElementsArray, activeFastElementsArray);
+    const endDateTime = getFastEndTime(fastHours, startDateTime);
+    localStorage.setItem("startTime", startDateTime);
+    localStorage.setItem("endTime", endDateTime);
+
+    updateTimerDisplay(startDateTime, endDateTime);
 }
 
 function getFastEndTime(selectedFastHours, startTime) {
@@ -26,6 +43,11 @@ function getFastEndTime(selectedFastHours, startTime) {
     dateTimeValue.setTime(startTime.getTime() + selectedFastHours*60*60*1000);
 
     return dateTimeValue;
+}
+
+function updateFastTimeText(time) {
+    const fastTimeText = document.getElementById("fastTime");
+    fastTimeText.textContent = time;
 }
 
 function getDateTime(time) {
@@ -73,25 +95,13 @@ function updateTimerDisplay(startTime, endTime) {
         progressBarElement.style.width = `${differenceInTimeRatio}%`;
         progressBarElement.style.transition = 'width 0.4s';
 
-        if (differenceInTimeRatio > 100) {
+        if (differenceInTimeRatio >= 100) {
             progressBarElement.style.backgroundColor = '#8cb369';
             progressOutlineElement.style.border = '1px solid #8cb369';
             finishButton.textContent = 'COMPLETE FAST'
         }
 
     }, 1000);
-}
-
-function clickStartHandler() {
-    const startDateTime = new Date();
-    // new Date('March 03, 2025 07:10:00');
-
-    toggleElementDisplay(inactiveFastElementsArray, activeFastElementsArray);
-    const endDateTime = getFastEndTime(fastHours, startDateTime);
-    localStorage.setItem("startTime", startDateTime);
-    localStorage.setItem("endTime", endDateTime);
-
-    updateTimerDisplay(startDateTime, endDateTime);
 }
 
 function cancelFastHandler() {
@@ -129,6 +139,14 @@ function toggleElementDisplay(arrayToHide, arrayToDisplay) {
     }
 }
 
+function modalHandler(callback, confirmationMessage) {
+    modalElement.classList.remove("hidden");
+    document.querySelector(".modal-container-text").textContent = confirmationMessage;
+
+    document.getElementById("modalConfirm").addEventListener("click", () => callback());
+    document.getElementById("modalCancel").addEventListener("click", () => callback());
+}
+
 function startExtension() {
     const startDateTime = localStorage.getItem("startTime");
     if (startDateTime) {
@@ -138,24 +156,6 @@ function startExtension() {
         updateTimerDisplay(new Date(startDateTime), new Date(endDateTime));
     }
     updateFastTimeText(fastHours);
-}
-
-function modalHandler(callback, confirmationMessage) {
-    modalElement.classList.remove("hidden");
-    document.querySelector(".modal-container-text").textContent = confirmationMessage;
-
-    document.getElementById("modalConfirm").addEventListener("click", () => callback());
-    document.getElementById("modalCancel").addEventListener("click", () => callback());
-}
-
-startButton.addEventListener("click", clickStartHandler);
-cancelButton.addEventListener("click", () => modalHandler(cancelFastHandler, "Cancel fast?"));
-updateButton.addEventListener("click", () => modalHandler(updateFastHandler, "Update start time?"));
-
-for (let i = 0; i < fastHourButtons.length; i++) {
-    fastHourButtons[i].addEventListener("click", () => {
-        selectFastHoursHandler(fastHourButtons[i]);
-    });
 }
 
 startExtension();

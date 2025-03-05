@@ -64,10 +64,9 @@ h1 {
 }
 
 .button {
-    border: none;
     max-width: 40%;
     padding: 14px 20px;
-    border-radius: 6px;
+
     border: 1px solid #667b75;
     border-radius: 15px;
 
@@ -79,10 +78,12 @@ h1 {
     transition: transform 0.2s, background-color 0.4s;
 }
 
-.button:hover {
+.button:hover:not(#finishButton),
+.complete:hover {
     transform: translateY(-3px);
     opacity: 0.8;
     background-color: #d7d8d8;
+    cursor: pointer;
 }
 
 .rotating-border {
@@ -102,6 +103,43 @@ h1 {
 .activeFastButton {
     font-size: 12px;
     padding: 10px;
+}
+
+.complete {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 16px;
+    padding: 5px;
+}
+
+.complete button {
+    z-index: 2;
+    max-width: 100%;
+    border: 1px solid #162b13;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.complete:hover::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 190px;
+    background: linear-gradient(#a9cf88, #3e6f24);
+    animation: rotate 1.5s linear infinite;
+    border-radius: 16px;
+    /* inset: 5px; */
 }
 
 .timeButton {
