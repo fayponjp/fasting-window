@@ -78,7 +78,7 @@ h1 {
     transition: transform 0.2s, background-color 0.4s;
 }
 
-.button:hover:not(#finishButton),
+.button:hover:not(.complete #finishButton),
 .complete:hover {
     transform: translateY(-3px);
     opacity: 0.8;
@@ -105,7 +105,7 @@ h1 {
     padding: 10px;
 }
 
-.complete {
+.finishButtonContainer {
     position: relative;
     display: flex;
     justify-content: center;
@@ -115,7 +115,7 @@ h1 {
     padding: 5px;
 }
 
-.complete button {
+#finishButtonContainer button {
     z-index: 2;
     max-width: 100%;
     border: 1px solid #162b13;
@@ -131,15 +131,17 @@ h1 {
     }
 }
 
-.complete:hover::before {
+.complete:hover::before,
+.complete:hover::after {
     content: '';
     position: absolute;
     width: 300px;
     height: 190px;
-    background: linear-gradient(#a9cf88, #3e6f24);
-    animation: rotate 1.5s linear infinite;
-    border-radius: 16px;
-    /* inset: 5px; */
+    background: linear-gradient(#f2ede6, #8cb369);
+    animation: rotate 4s linear infinite;
+    border-radius: inherit;
+    inset: -5px;
+    filter: blur(40px);
 }
 
 .timeButton {

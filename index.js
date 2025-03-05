@@ -1,9 +1,10 @@
 const progressOutlineElement = document.getElementById("progressBorder");
 const timerDisplay = document.getElementById("timerDisplay");
+const finishButtonContainer = document.getElementById("finishButtonContainer");
 const finishButton = document.getElementById("finishButton");
 const updateButton = document.getElementById("updateButton");
 const cancelButton = document.getElementById("cancelButton");
-const activeFastElementsArray = [progressOutlineElement, timerDisplay, finishButton, updateButton, cancelButton];
+const activeFastElementsArray = [progressOutlineElement, timerDisplay, finishButtonContainer, finishButton, updateButton, cancelButton];
 
 const startButton = document.getElementById("startButton");
 const hourOptions = document.querySelector(".hourOptions");
@@ -98,7 +99,8 @@ function updateTimerDisplay(startTime, endTime) {
         if (differenceInTimeRatio >= 100) {
             progressBarElement.style.backgroundColor = '#8cb369';
             progressOutlineElement.style.border = '1px solid #8cb369';
-            finishButton.textContent = 'COMPLETE FAST'
+            finishButton.textContent = 'COMPLETE FAST';
+            document.getElementById("finishButtonContainer").classList.add("complete");
         }
 
     }, 1000);
@@ -131,11 +133,11 @@ function selectFastHoursHandler(fastHourElement) {
 
 function toggleElementDisplay(arrayToHide, arrayToDisplay) {
     for (let i = 0; i < arrayToHide.length; i++) {
-        arrayToHide[i].classList.toggle("hidden");
+        arrayToHide[i].classList.add("hidden");
     }
 
     for (let i = 0; i < arrayToDisplay.length; i++) {
-        arrayToDisplay[i].classList.toggle("hidden");
+        arrayToDisplay[i].classList.remove("hidden");
     }
 }
 
