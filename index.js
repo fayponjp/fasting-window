@@ -1,10 +1,10 @@
 const progressOutlineElement = document.getElementById("progressBorder");
-const timerDisplay = document.getElementById("timerDisplay");
+const timerDisplayElement = document.getElementById("timerDisplay");
 const finishButtonContainer = document.getElementById("finishButtonContainer");
 const finishButton = document.getElementById("finishButton");
 const updateButton = document.getElementById("updateButton");
 const cancelButton = document.getElementById("cancelButton");
-const activeFastElementsArray = [progressOutlineElement, timerDisplay, finishButtonContainer, finishButton, updateButton, cancelButton];
+const activeFastElementsArray = [progressOutlineElement, timerDisplayElement, finishButtonContainer, finishButton, updateButton, cancelButton];
 
 const startButton = document.getElementById("startButton");
 const hourOptions = document.querySelector(".hourOptions");
@@ -18,8 +18,9 @@ let fastHours = 16;
 let loopVariable = "";
 
 startButton.addEventListener("click", startFastTimer);
-cancelButton.addEventListener("click", () => modalHandler(cancelFastHandler, "Cancel fast?"));
+cancelButton.addEventListener("click", () => modalHandler(endFastHandler, "Cancel fast?"));
 updateButton.addEventListener("click", () => modalHandler(updateFastHandler, "Update start time?"));
+finishButton.addEventListener("click", () => completeFastHandler());
 
 for (let i = 0; i < fastHourButtons.length; i++) {
     fastHourButtons[i].addEventListener("click", () => {
@@ -51,31 +52,42 @@ function updateFastTimeText(time) {
     fastTimeText.textContent = time;
 }
 
-function getDateTime(time) {
-    const day = time.getDate();
-    const month = time.getMonth()+1;
-    const year = time.getFullYear();
-
-    let hour = time.getHours();
-    if(hour<10)hour = "0"+hour;
-
-    let minute = time.getMinutes();
-    if(minute<10)minute = "0"+minute;
-
-    let second = time.getSeconds();
-    if(second<10)second = "0"+second;
-
-    return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+function completeFastHandler() {
+    if (finishButtonContainer.classList.contains("complete")) {
+        endFastHandler();
+        timerDisplayElement.textContent = "Fast Complete!";
+        timerDisplayElement.classList.remove("hidden");
+        // add fast time to localStorage
+        // update display to show time since last fast
+    } else {
+        endFastHandler();
+    }
 }
+
+// function getDateTime(time) {
+//     const day = time.getDate();
+//     const month = time.getMonth()+1;
+//     const year = time.getFullYear();
+
+//     let hour = time.getHours();
+//     if(hour<10)hour = "0"+hour;
+
+//     let minute = time.getMinutes();
+//     if(minute<10)minute = "0"+minute;
+
+//     let second = time.getSeconds();
+//     if(second<10)second = "0"+second;
+
+//     return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+// }
 
 function updateTimerDisplay(startTime, endTime) {
     const goalSeconds = endTime.getTime() - startTime.getTime();
 
-    const timeDisplayElement = document.getElementById("timerDisplay");
     const progressBarElement = document.getElementById("progressBar");
 
-    const formattedStartDisplay = getDateTime(startTime);
-    const formattedEndDisplay = getDateTime(endTime);
+    // const formattedStartDisplay = getDateTime(startTime);
+    // const formattedEndDisplay = getDateTime(endTime);
 
     loopVariable = setInterval(() => {
         const currentTime = new Date();
@@ -91,7 +103,7 @@ function updateTimerDisplay(startTime, endTime) {
         let seconds = totalSeconds % 60;
         if(seconds<10)seconds = "0"+seconds;
 
-        timeDisplayElement.textContent =`${hours}:${minutes}:${seconds}`;
+        timerDisplayElement.innerHTML =`<span>Time Elapsed:</span> ${hours}:${minutes}:${seconds}`;
 
         progressBarElement.style.width = `${differenceInTimeRatio}%`;
         progressBarElement.style.transition = 'width 0.4s';
@@ -100,25 +112,30 @@ function updateTimerDisplay(startTime, endTime) {
             progressBarElement.style.backgroundColor = '#8cb369';
             progressOutlineElement.style.border = '1px solid #8cb369';
             finishButton.textContent = 'COMPLETE FAST';
-            document.getElementById("finishButtonContainer").classList.add("complete");
+            finishButtonContainer.classList.add("complete");
         }
 
     }, 1000);
 }
 
-function cancelFastHandler() {
-    clearInterval(loopVariable);
-
-    localStorage.removeItem("startTime");
-    localStorage.removeItem("endTime");
+function endFastHandler() {
+    clearLocalStorage();
 
     toggleElementDisplay(activeFastElementsArray, inactiveFastElementsArray);
     modalElement.classList.add("hidden");
 }
 
 function updateFastHandler() {
-    clearInterval(loopVariable);
+    clearLocalStorage();
+
     modalElement.classList.add("hidden");
+}
+
+function clearLocalStorage() {
+    clearInterval(loopVariable);
+
+    localStorage.removeItem("startTime");
+    localStorage.removeItem("endTime");
 }
 
 function selectFastHoursHandler(fastHourElement) {
@@ -154,10 +171,17 @@ function startExtension() {
     if (startDateTime) {
         const endDateTime = localStorage.getItem("endTime");
         toggleElementDisplay(inactiveFastElementsArray, activeFastElementsArray);
-        console.log(new Date(startDateTime));
         updateTimerDisplay(new Date(startDateTime), new Date(endDateTime));
     }
     updateFastTimeText(fastHours);
 }
 
 startExtension();
+
+// remaining to do:
+// 1. complete fast 
+//  a. update localStorage. maybe put it in a list for history?
+//  b. if done that way, also add a time since last fast?
+// 2. update fast input with start time 
+// 3. update display under x-hour fast or under the bar to show time started
+// 4. refactor? 
