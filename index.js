@@ -1,11 +1,7 @@
-const progressOutlineElement = document.getElementById("progressBorder");
 const timerDisplayElement = document.getElementById("timerDisplay");
 const finishButtonContainer = document.getElementById("finishButtonContainer");
 const finishButton = document.getElementById("finishButton");
-const updateButton = document.getElementById("updateButton");
-const cancelButton = document.getElementById("cancelButton");
 
-const startButton = document.getElementById("startButton");
 const hourOptions = document.querySelector(".hourOptions");
 
 const modalElement = document.querySelector(".modal");
@@ -16,27 +12,23 @@ let fastHours = 16;
 let loopVariable = "";
 
 document.getElementById("no-active-fast").addEventListener("click", (e) => {
-    if (e.target === startButton) {
+    if (e.target === document.getElementById("startButton")) {
         startFastTimer();
         toggleFastDisplay();
+    } else if (e.target.classList.contains("timeButton")) {
+        selectFastHoursHandler(e.target);
     }
 });
 
 document.getElementById("active-fast").addEventListener("click", (e) => {
-    if (e.target === cancelButton) {
+    if (e.target === document.getElementById("cancelButton")) {
         modalHandler(endFastHandler, "Cancel fast?");
-    } else if (e.target === updateButton) {
+    } else if (e.target === document.getElementById("updateButton")) {
         modalHandler(updateFastHandler, "Update start time?");
     } else if (e.target === finishButton) {
         completeFastHandler();
     }
-})
-
-for (let i = 0; i < fastHourButtons.length; i++) {
-    fastHourButtons[i].addEventListener("click", () => {
-        selectFastHoursHandler(fastHourButtons[i]);
-    });
-}
+});
 
 function startFastTimer() {
     const startDateTime = new Date();
@@ -124,7 +116,7 @@ function updateTimerDisplay(startTime, endTime) {
 
         if (differenceInTimeRatio >= 100) {
             progressBarElement.style.backgroundColor = '#8cb369';
-            progressOutlineElement.style.border = '1px solid #8cb369';
+            document.getElementById("progressBorder").style.border = '1px solid #8cb369';
             finishButton.textContent = 'COMPLETE FAST';
             finishButtonContainer.classList.add("complete");
         }

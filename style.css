@@ -23,14 +23,16 @@ h1 {
 }
 
 .extension {
-    width: 368px;
+    width: 376px;
     height: 400px;
-    background-color: rgb(220, 225, 220, 1);
+    background-color: #dce1dc;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1.75em 1.8em;
+    padding: 1.75em 1em;
+
+    position: relative;
 }
 
 .header, .footer {
@@ -44,10 +46,9 @@ h1 {
     justify-content: center;
     row-gap: 1em;
     padding: 1em 0;
+    width: 330px;
 
     position: relative;
-
-    margin-bottom: auto;
 }
 
 .button {
@@ -110,7 +111,7 @@ h1 {
 }
 
 #progressBorder {
-    width: 80%;
+    width: 95%;
     height: 40px;
     border: 1px solid #d77166;
     background-color: #fff4f4;
@@ -201,12 +202,16 @@ h1 {
     z-index: 3;
     border-radius: 8px;
     border: 1px solid #162b13;
+    padding: 1.25em 0;
 
-    position: fixed;
+    position: absolute;
     left: 0;
     right: 0;
     top: 25%;
+}
 
+.modal-container-text {
+    margin-bottom: 0.8em;
 }
 
 .hidden {
