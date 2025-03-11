@@ -17,27 +17,33 @@
 </head>
 <body>
     <div class="extension">
-        <main class="main">
+        <header class="header">
             <h1><span id="fastTime"></span>-HOUR FAST</h1>
-            <div id="timerDisplay" class="timerDisplay hidden"></div>
-            <div class="hidden" id="progressBorder">
-                <div id="progressBar"></div>
+        </header>
+        <main class="main">
+            <div class="no-active-fast" id="no-active-fast">
+                <button class="button fastButton" id="startButton">BEGIN</button>
+                <div class="hourOptions">
+                    <button title="16-hour fast" class="button timeButton selected">16</button>
+                    <button title="18-hour fast" class="button timeButton ">18</button>
+                    <button title="20-hour fast" class="button timeButton">20</button>
+                </div>
             </div>
-            <button class="button fastButton" id="startButton">BEGIN</button>
-            <div id="finishButtonContainer" class="finishButtonContainer hidden">
-                <button class="button fastButton" id="finishButton">END FAST</button>
-            </div>
-            <div class="activeFastButtons">
-                <button class="button activeFastButton hidden" id="updateButton">UPDATE START TIME</button>
-                <button class="button activeFastButton  hidden" id="cancelButton">CANCEL FAST</button>
-            </div>
-            <div class="hourOptions">
-                <button title="16-hour fast" class="button timeButton selected">16</button>
-                <button title="18-hour fast" class="button timeButton ">18</button>
-                <button title="20-hour fast" class="button timeButton">20</button>
+            <div class="active-fast hidden" id="active-fast">
+                <div id="timerDisplay" class="timerDisplay"></div>
+                <div class="progressBorder" id="progressBorder">
+                    <div id="progressBar"></div>
+                </div>
+                <div id="finishButtonContainer" class="finishButtonContainer">
+                    <button class="button fastButton" id="finishButton">END FAST</button>
+                </div>
+                <div class="activeFastButtons">
+                    <button class="button activeFastButton" id="updateButton">UPDATE START TIME</button>
+                    <button class="button activeFastButton " id="cancelButton">CANCEL FAST</button>
+                </div>
             </div>
         </main>
-
+        <footer class="footer"></footer>
         <div class="modal hidden">
             <h3 class="modal-container-text"></h3>
             <button class="button" id="modalConfirm">Yes</button>
