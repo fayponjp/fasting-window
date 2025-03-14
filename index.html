@@ -44,10 +44,19 @@
             </div>
         </main>
         <footer class="footer"></footer>
-        <div class="modal hidden">
+        <div class="modal hidden" id="modal">
             <h3 class="modal-container-text"></h3>
-            <button class="button" id="modalConfirm">Yes</button>
-            <button class="button" id="modalCancel">No</button>
+            <div class="modal-content" id="modal-content">
+                <button class="button" id="modalConfirm">Yes</button>
+                <button class="button" id="modalCancel">No</button>
+                <input type="hidden" name="modal-hidden-input" id="modal-hidden-input">
+            </div>
+            <div class="modal-update hidden" id="modal-update">
+                <span class="modal-update-text"></span>
+                <label for="new-date">Enter new start date:</label>
+                <input name="new-date" type="datetime-local" class="modal-new-time-input" id="new-time-input">
+                <button class="modal-update-btn button">Set New Start Time</button>
+            </div>
         </div>
     </div>
     <script src="index.js" defer></script>

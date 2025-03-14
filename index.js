@@ -2,14 +2,10 @@ const timerDisplayElement = document.getElementById("timerDisplay");
 const finishButtonContainer = document.getElementById("finishButtonContainer");
 const finishButton = document.getElementById("finishButton");
 
-const hourOptions = document.querySelector(".hourOptions");
-
 const modalElement = document.querySelector(".modal");
 
-const fastHourButtons = document.querySelectorAll(".timeButton");
-
 let fastHours = 16;
-let loopVariable = "";
+let setIntervalVariable = "";
 
 document.getElementById("no-active-fast").addEventListener("click", (e) => {
     if (e.target === document.getElementById("startButton")) {
@@ -22,17 +18,25 @@ document.getElementById("no-active-fast").addEventListener("click", (e) => {
 
 document.getElementById("active-fast").addEventListener("click", (e) => {
     if (e.target === document.getElementById("cancelButton")) {
-        modalHandler(endFastHandler, "Cancel fast?");
+        modalDisplayHandler("Cancel fast?", false, false);
     } else if (e.target === document.getElementById("updateButton")) {
-        modalHandler(updateFastHandler, "Update start time?");
+        modalDisplayHandler("Update start time?", false, false);
     } else if (e.target === finishButton) {
         completeFastHandler();
     }
 });
 
+document.getElementById("modal").addEventListener("click", (e) => {
+    if (e.target === document.getElementById("modalConfirm")) {
+        modalDisplayHandler("Update Start Time", false, true);
+    } else if (e.target === document.getElementById("modalCancel")) {
+        modalDisplayHandler("", true, false);
+    }
+});
+
 function startFastTimer() {
     const startDateTime = new Date();
-    // new Date('March 03, 2025 07:10:00');
+    // new Date('March 13, 2025 07:10:00');
 
     const endDateTime = getFastEndTime(fastHours, startDateTime);
     localStorage.setItem("startTime", startDateTime);
@@ -95,7 +99,7 @@ function updateTimerDisplay(startTime, endTime) {
     // const formattedStartDisplay = getDateTime(startTime);
     // const formattedEndDisplay = getDateTime(endTime);
 
-    loopVariable = setInterval(() => {
+    setIntervalVariable = setInterval(() => {
         const currentTime = new Date();
         const secondsSinceStart = currentTime.getTime() - startTime.getTime();
         const differenceInTimeRatio = (secondsSinceStart / goalSeconds) * 100;
@@ -137,7 +141,7 @@ function updateFastHandler() {
 }
 
 function clearLocalStorage() {
-    clearInterval(loopVariable);
+    clearInterval(setIntervalVariable);
 
     localStorage.removeItem("startTime");
     localStorage.removeItem("endTime");
@@ -153,15 +157,37 @@ function selectFastHoursHandler(fastHourElement) {
     }
 }
 
-function modalHandler(callback, confirmationMessage) {
-    modalElement.classList.remove("hidden");
-    document.querySelector(".modal-container-text").textContent = confirmationMessage;
+function modalDisplayHandler(confirmationMessage, hideModal, isUpdate) {
+    const modalContentEl = document.getElementById("modal-content");
+    const modalUpdateEl = document.getElementById("modal-update");
+    const modalTextEl = document.querySelector(".modal-container-text");
 
-    document.getElementById("modalConfirm").addEventListener("click", () => callback());
-    document.getElementById("modalCancel").addEventListener("click", () => callback());
+    if (hideModal && !isUpdate) {
+        modalTextEl.textContent = "";
+
+        modalContentEl.classList.remove("hidden");
+        modalUpdateEl.classList.add("hidden");
+
+        modalElement.classList.add("hidden");
+    } else if (!hideModal && !isUpdate) {
+        modalTextEl.textContent = confirmationMessage
+
+        modalContentEl.classList.remove("hidden");
+        modalUpdateEl.classList.add("hidden");
+
+        modalElement.classList.remove("hidden");
+    } else if (!hideModal && isUpdate) {
+        modalTextEl.textContent = confirmationMessage
+
+        modalContentEl.classList.add("hidden");
+        modalUpdateEl.classList.remove("hidden");
+
+        modalElement.classList.remove("hidden");
+    }
 }
 
 function startExtension() {
+    const fastHistory = localStorage.getItem("fastHistory");
     const startDateTime = localStorage.getItem("startTime");
     if (startDateTime) {
         const endDateTime = localStorage.getItem("endTime");
