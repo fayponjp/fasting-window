@@ -17,26 +17,32 @@ document.getElementById("no-active-fast").addEventListener("click", (e) => {
 });
 
 document.getElementById("active-fast").addEventListener("click", (e) => {
+    const hiddenInputEl = document.getElementById("modal-hidden-input");
     if (e.target === document.getElementById("cancelButton")) {
         modalDisplayHandler("Cancel fast?", false, false);
+        hiddenInputEl.value = "cancel";
     } else if (e.target === document.getElementById("updateButton")) {
         modalDisplayHandler("Update start time?", false, false);
+        hiddenInputEl.value = "update";
     } else if (e.target === finishButton) {
-        completeFastHandler();
+        modalDisplayHandler("Complete Fast?", false, false);
+        hiddenInputEl.value = "complete";
     }
 });
 
 document.getElementById("modal").addEventListener("click", (e) => {
     if (e.target === document.getElementById("modalConfirm")) {
-        modalDisplayHandler("Update Start Time", false, true);
+        modalDecisionHandler(document.getElementById("modal-hidden-input").value);
     } else if (e.target === document.getElementById("modalCancel")) {
         modalDisplayHandler("", true, false);
+    } else if (e.target === document.getElementById("modal-update-btn")) {
+        updateFastHandler();
     }
 });
 
 function startFastTimer() {
     const startDateTime = new Date();
-    // new Date('March 13, 2025 07:10:00');
+    // new Date('March 14, 2025 14:12:00');
 
     const endDateTime = getFastEndTime(fastHours, startDateTime);
     localStorage.setItem("startTime", startDateTime);
@@ -48,6 +54,7 @@ function startFastTimer() {
 function toggleFastDisplay() {
     document.getElementById("active-fast").classList.toggle("hidden");
     document.getElementById("no-active-fast").classList.toggle("hidden");
+    finishButtonContainer.classList.remove("complete");
 }
 
 function getFastEndTime(selectedFastHours, startTime) {
@@ -64,13 +71,35 @@ function updateFastTimeText(time) {
 
 function completeFastHandler() {
     if (finishButtonContainer.classList.contains("complete")) {
-        endFastHandler();
         timerDisplayElement.textContent = "Fast Complete!";
         timerDisplayElement.classList.remove("hidden");
-        // add fast time to localStorage
-        // update display to show time since last fast
-    } else {
+        updateLocalHistory(true);
+
         endFastHandler();
+    } else {
+        updateLocalHistory(false);
+        endFastHandler();
+    }
+
+}
+
+function updateLocalHistory(bool) {
+    const localFastHistory = localStorage.getItem("fastHistory");
+    if (localFastHistory) {
+        const historyObject = JSON.parse(localFastHistory);
+        historyObject.push({
+            startTime: localStorage.getItem("startTime"), 
+            endTime: localStorage.getItem("endTime"),
+            completed: bool
+        });
+
+        localStorage.setItem("fastHistory", JSON.stringify(historyObject));
+    } else {
+        localStorage.setItem("fastHistory", JSON.stringify([{
+            startTime: localStorage.getItem("startTime"), 
+            endTime: localStorage.getItem("endTime"),
+            completed: bool
+        }]));
     }
 }
 
@@ -94,10 +123,8 @@ function completeFastHandler() {
 function updateTimerDisplay(startTime, endTime) {
     const goalSeconds = endTime.getTime() - startTime.getTime();
 
+    finishButtonContainer.classList.remove("complete");
     const progressBarElement = document.getElementById("progressBar");
-
-    // const formattedStartDisplay = getDateTime(startTime);
-    // const formattedEndDisplay = getDateTime(endTime);
 
     setIntervalVariable = setInterval(() => {
         const currentTime = new Date();
@@ -131,13 +158,17 @@ function updateTimerDisplay(startTime, endTime) {
 function endFastHandler() {
     clearLocalStorage();
     toggleFastDisplay();
-    modalElement.classList.add("hidden");
+    modalDisplayHandler("", true, false);
 }
 
 function updateFastHandler() {
-    clearLocalStorage();
+    const inputElementValue = document.getElementById("new-time-input").value;
 
-    modalElement.classList.add("hidden");
+    localStorage.setItem("startTime", new Date(inputElementValue));
+    modalDisplayHandler("", true, false);
+    clearInterval(setIntervalVariable);
+
+    updateTimerDisplay(new Date(localStorage.getItem("startTime")), getFastEndTime(fastHours, new Date(localStorage.getItem("startTime"))));
 }
 
 function clearLocalStorage() {
@@ -183,11 +214,30 @@ function modalDisplayHandler(confirmationMessage, hideModal, isUpdate) {
         modalUpdateEl.classList.remove("hidden");
 
         modalElement.classList.remove("hidden");
+
+        const cleanStartDate = new Date(localStorage.getItem("startTime"));
+        cleanStartDate.setMinutes(cleanStartDate.getMinutes() - cleanStartDate.getTimezoneOffset());
+        document.getElementById("new-time-input").value = cleanStartDate.toISOString().slice(0,16);
+    }
+}
+
+function modalDecisionHandler(arg) {
+    switch (arg) {
+        case "cancel":
+            endFastHandler();
+            break;
+        case "update":
+            modalDisplayHandler("Update Start Time", false, true);
+            break;
+        case "complete":
+            completeFastHandler();
+            break;
+        default: 
+            break;
     }
 }
 
 function startExtension() {
-    const fastHistory = localStorage.getItem("fastHistory");
     const startDateTime = localStorage.getItem("startTime");
     if (startDateTime) {
         const endDateTime = localStorage.getItem("endTime");
@@ -201,7 +251,7 @@ startExtension();
 
 // remaining to do:
 // 1. complete fast 
-//  a. update localStorage. maybe put it in a list for history?
+//  a. update localStorage. maybe put it in a list for history? DONE
 //  b. if done that way, also add a time since last fast?
 // 2. update fast input with start time 
 // 3. update display under x-hour fast or under the bar to show time started
