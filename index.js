@@ -145,6 +145,8 @@ function updateTimerDisplay(startTime, endTime) {
         progressBarElement.style.width = `${differenceInTimeRatio}%`;
         progressBarElement.style.transition = 'width 0.4s';
 
+
+        // will need to put these into classes
         if (differenceInTimeRatio >= 100) {
             progressBarElement.style.backgroundColor = '#8cb369';
             document.getElementById("progressBorder").style.border = '1px solid #8cb369';
@@ -162,13 +164,15 @@ function endFastHandler() {
 }
 
 function updateFastHandler() {
-    const inputElementValue = document.getElementById("new-time-input").value;
+    if (document.getElementById("new-time-input").checkValidity()) {
+        const inputElementValue = document.getElementById("new-time-input").value;
 
-    localStorage.setItem("startTime", new Date(inputElementValue));
-    modalDisplayHandler("", true, false);
-    clearInterval(setIntervalVariable);
+        localStorage.setItem("startTime", new Date(inputElementValue));
+        modalDisplayHandler("", true, false);
+        clearInterval(setIntervalVariable);
 
-    updateTimerDisplay(new Date(localStorage.getItem("startTime")), getFastEndTime(fastHours, new Date(localStorage.getItem("startTime"))));
+        updateTimerDisplay(new Date(localStorage.getItem("startTime")), getFastEndTime(fastHours, new Date(localStorage.getItem("startTime"))));
+    }
 }
 
 function clearLocalStorage() {
@@ -193,31 +197,33 @@ function modalDisplayHandler(confirmationMessage, hideModal, isUpdate) {
     const modalUpdateEl = document.getElementById("modal-update");
     const modalTextEl = document.querySelector(".modal-container-text");
 
-    if (hideModal && !isUpdate) {
-        modalTextEl.textContent = "";
+    modalTextEl.textContent = confirmationMessage;
 
+    if (hideModal && !isUpdate) {
         modalContentEl.classList.remove("hidden");
         modalUpdateEl.classList.add("hidden");
 
         modalElement.classList.add("hidden");
     } else if (!hideModal && !isUpdate) {
-        modalTextEl.textContent = confirmationMessage
-
         modalContentEl.classList.remove("hidden");
         modalUpdateEl.classList.add("hidden");
 
         modalElement.classList.remove("hidden");
     } else if (!hideModal && isUpdate) {
-        modalTextEl.textContent = confirmationMessage
-
         modalContentEl.classList.add("hidden");
         modalUpdateEl.classList.remove("hidden");
 
         modalElement.classList.remove("hidden");
 
         const cleanStartDate = new Date(localStorage.getItem("startTime"));
+        const maxDate = new Date();
         cleanStartDate.setMinutes(cleanStartDate.getMinutes() - cleanStartDate.getTimezoneOffset());
-        document.getElementById("new-time-input").value = cleanStartDate.toISOString().slice(0,16);
+        maxDate.setMinutes(maxDate.getMinutes() - maxDate.getTimezoneOffset());
+
+        const timeInput = document.getElementById("new-time-input");
+        timeInput.value = cleanStartDate.toISOString().slice(0,16);
+        timeInput.max = maxDate.toISOString().slice(0, 16);
+        console.log(timeInput)
     }
 }
 
