@@ -223,7 +223,6 @@ function modalDisplayHandler(confirmationMessage, hideModal, isUpdate) {
         const timeInput = document.getElementById("new-time-input");
         timeInput.value = cleanStartDate.toISOString().slice(0,16);
         timeInput.max = maxDate.toISOString().slice(0, 16);
-        console.log(timeInput)
     }
 }
 
